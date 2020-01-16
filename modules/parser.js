@@ -17,25 +17,39 @@ const parse = input => {
   packages.forEach(package => {
     var p = {}
     var lines = package.split('\n')
-    const accepted = ['Package', 'Description']
+    var description = ''
+    var descGoingOn = false
     lines.forEach(line => {
-      parts = line.split(':')
-      if (accepted.includes(parts[0])) p[parts[0]] = parts[1].trim()
-      if (parts[0] === 'Depends') {
-        var dependencies = []
-        var deps = parts[1].split(',')
-        deps = deps.map(dep => dep.split('(')[0].trim())
-        var uniqueDeps = [...new Set(deps)]
-        p['Dependencies'] = uniqueDeps
+      if (descGoingOn && line.charAt(0) === ' ') {
+        if (line.charAt(1) === '.') description += '\n\n'
+        else description += line
       }
-      p['Reverse dependencies'] = []
-      p['Unavailable dependencies'] = []
-      if (p['Dependencies'] === undefined) p['Dependencies'] = []
+      parts = line.split(':')
+      if (parts[0] === 'Package') p['Package'] = parts[1].trim()
+      // console.log(p['Description'])
+      if (parts[0] === 'Depends')
+        p['Dependencies'] = parseDependencies(parts[1])
+      if (parts[0] === 'Description') {
+        descGoingOn = true
+        description += parts[1] + '\n\n'
+      }
     })
+    p['Reverse dependencies'] = []
+    p['Unavailable dependencies'] = []
+    p['Description'] = description
+    if (p['Dependencies'] === undefined) p['Dependencies'] = []
+
     result[p['Package']] = p
   })
 
   return result
+}
+
+const parseDependencies = deps => {
+  var deps = parts[1].split(',')
+  deps = deps.map(dep => dep.split('(')[0].trim())
+  var uniqueDeps = [...new Set(deps)]
+  return uniqueDeps
 }
 
 const reverseDeps = packages => {
@@ -63,7 +77,6 @@ const checkForPipes = (packages, dependency, name) => {
       packages[name]['Dependencies'].indexOf(dependency),
       1
     )
-    console.log(packages[name])
   }
   return packages
 }
