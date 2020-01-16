@@ -1,24 +1,25 @@
 var fs = require('fs')
 
-const handle = string => {
+const handle = input => {
   try {
-    var data = fs.readFileSync('./status.real', 'utf8')
-    const parsed = parse(data)
+    // var data = fs.readFileSync('./status.real', 'utf8')
+    const parsed = parse(input)
     const withReverse = reverseDeps(parsed)
-    fs.writeFile('./sample.txt', JSON.stringify(withReverse), err => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      console.log('File has been created')
-    })
+    return withReverse
+    // fs.writeFile('./sample.txt', JSON.stringify(withReverse), err => {
+    //   if (err) {
+    //     console.error(err)
+    //     return
+    //   }
+    //   console.log('File has been created')
+    // })
   } catch (e) {
     console.log('Error reading file:', e.stack)
   }
 }
 
-const parse = string => {
-  var packages = string.split('\n\n')
+const parse = input => {
+  var packages = input.split('\n\n')
   var result = {}
 
   packages.forEach(package => {
@@ -73,4 +74,4 @@ const checkForPipes = (packages, dependency, name) => {
   return packages
 }
 
-handle('sample')
+module.exports = handle
