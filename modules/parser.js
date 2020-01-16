@@ -4,6 +4,13 @@ const handle = input => {
   try {
     const parsed = parse(input)
     const withReverse = reverseDeps(parsed)
+    // fs.writeFile('./sample.txt', JSON.stringify(withReverse), err => {
+    //   if (err) {
+    //     console.error(err)
+    //     return
+    //   }
+    //   console.log('File has been created')
+    // })
     return withReverse
   } catch (e) {
     console.log('Error reading file:', e.stack)
