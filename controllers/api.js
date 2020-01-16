@@ -13,7 +13,6 @@ packagesRouter.get('/sample', (request, response) => {
 
 packagesRouter.post('/parse', (request, response) => {
   const body = request.body
-    console.log(handler(body.content + ''))
     response.json(handler(body.content))
 })
 

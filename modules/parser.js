@@ -2,17 +2,9 @@ var fs = require('fs')
 
 const handle = input => {
   try {
-    // var data = fs.readFileSync('./status.real', 'utf8')
     const parsed = parse(input)
     const withReverse = reverseDeps(parsed)
     return withReverse
-    // fs.writeFile('./sample.txt', JSON.stringify(withReverse), err => {
-    //   if (err) {
-    //     console.error(err)
-    //     return
-    //   }
-    //   console.log('File has been created')
-    // })
   } catch (e) {
     console.log('Error reading file:', e.stack)
   }
@@ -67,9 +59,11 @@ const checkForPipes = (packages, dependency, name) => {
         packages[name]['Unavailable dependencies'].push(option)
       }
     })
-    packages[name]['Dependencies'].splice(packages[name]['Dependencies'].indexOf(dependency), 1 );
+    packages[name]['Dependencies'].splice(
+      packages[name]['Dependencies'].indexOf(dependency),
+      1
+    )
     console.log(packages[name])
-
   }
   return packages
 }
