@@ -21,19 +21,18 @@ const parse = input => {
   var packages = input.split('\n\n')
   var result = {}
 
-  packages.forEach(package => {
+  packages.forEach(pckge => {
     var p = {}
-    var lines = package.split('\n')
+    var lines = pckge.split('\n')
     var description = ''
     var descGoingOn = false
     lines.forEach(line => {
       if (descGoingOn && line.charAt(0) === ' ') {
         if (line.charAt(1) === '.') description += '\n\n'
         else description += line
-      }
+      } else descGoinOn = false
       parts = line.split(':')
       if (parts[0] === 'Package') p['Package'] = parts[1].trim()
-      // console.log(p['Description'])
       if (parts[0] === 'Depends')
         p['Dependencies'] = parseDependencies(parts[1])
       if (parts[0] === 'Description') {
@@ -60,8 +59,8 @@ const parseDependencies = deps => {
 }
 
 const reverseDeps = packages => {
-  for (const [name, package] of Object.entries(packages)) {
-    package['Dependencies'].forEach(dep => {
+  for (const [name, pckge] of Object.entries(packages)) {
+    pckge['Dependencies'].forEach(dep => {
       packages = checkForPipes(packages, dep, name)
       if (packages[dep]) packages[dep]['Reverse dependencies'].push(name)
     })

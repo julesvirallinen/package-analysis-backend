@@ -1,6 +1,0 @@
-POST http://localhost:3001/api/parse
-content-type: application/json
-
-{
-    "content" : "Package: python-twisted-bin\nStatus: install ok installed\n\n"
-}
