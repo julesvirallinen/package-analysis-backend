@@ -18,7 +18,7 @@ const handle = input => {
 }
 
 const parse = input => {
-  var packages = input.split('\n\n')
+  var packages = input.trim().split('\n\n')
   var result = {}
 
   packages.forEach(pckge => {
